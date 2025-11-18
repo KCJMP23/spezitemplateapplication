@@ -265,11 +265,72 @@ export class StudyService {
         return { eligible: false, reasons: ['Study not found'] };
       }
 
+      // Get user data
+      const user = await firebaseService.getDocument<any>(`users`, userId);
+      if (!user) {
+        return { eligible: false, reasons: ['User not found'] };
+      }
+
       const reasons: string[] = [];
       const criteria = study.eligibilityCriteria;
 
-      // In a real implementation, this would check user data
-      // For now, return placeholder
+      // Check age requirements
+      if (criteria.minAge !== undefined || criteria.maxAge !== undefined) {
+        const age = user.dateOfBirth
+          ? Math.floor((Date.now() - new Date(user.dateOfBirth).getTime()) / (365.25 * 24 * 60 * 60 * 1000))
+          : null;
+
+        if (age === null) {
+          reasons.push('Date of birth required for age verification');
+        } else {
+          if (criteria.minAge !== undefined && age < criteria.minAge) {
+            reasons.push(`Minimum age requirement: ${criteria.minAge} years`);
+          }
+          if (criteria.maxAge !== undefined && age > criteria.maxAge) {
+            reasons.push(`Maximum age requirement: ${criteria.maxAge} years`);
+          }
+        }
+      }
+
+      // Check gender requirements
+      if (criteria.gender && criteria.gender !== 'all') {
+        if (!user.gender || user.gender !== criteria.gender) {
+          reasons.push(`Study requires ${criteria.gender} participants`);
+        }
+      }
+
+      // Check required conditions
+      if (criteria.conditions && criteria.conditions.length > 0) {
+        const userConditions = user.conditions || [];
+        const missingConditions = criteria.conditions.filter(
+          (condition: string) => !userConditions.includes(condition)
+        );
+        if (missingConditions.length > 0) {
+          reasons.push(`Required conditions: ${missingConditions.join(', ')}`);
+        }
+      }
+
+      // Check exclusion criteria
+      if (criteria.exclusions && criteria.exclusions.length > 0) {
+        const userConditions = user.conditions || [];
+        const excludingConditions = criteria.exclusions.filter(
+          (exclusion: string) => userConditions.includes(exclusion)
+        );
+        if (excludingConditions.length > 0) {
+          reasons.push(`Excluded due to: ${excludingConditions.join(', ')}`);
+        }
+      }
+
+      // Check custom criteria (evaluates as boolean expressions)
+      if (criteria.customCriteria && criteria.customCriteria.length > 0) {
+        // Custom criteria would need specific implementation based on study needs
+        // For now, we'll mark them as informational
+        logger.debug('Custom criteria require manual review', {
+          userId,
+          studyId,
+          criteria: criteria.customCriteria,
+        });
+      }
 
       return {
         eligible: reasons.length === 0,

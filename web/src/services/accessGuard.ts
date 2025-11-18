@@ -195,10 +195,21 @@ export class AccessGuardService {
    */
   async hasValidConsent(userId: string): Promise<boolean> {
     try {
-      // Check consent status from database
-      // In a real implementation, this would check Firestore
-      logger.debug('Checking consent status', { userId });
-      return true; // Placeholder
+      // Check if user has signed consent in Firestore
+      const consentDocs = await firebaseService.queryDocuments<any>(
+        `users/${userId}/consents`,
+        [{ field: 'status', operator: '==', value: 'signed' }]
+      );
+
+      // Check if there's at least one valid signed consent
+      const hasValidConsent = consentDocs.some((consent) => {
+        const signedDate = consent.signedAt?.toDate?.() || new Date(consent.signedAt);
+        const isRecent = Date.now() - signedDate.getTime() < 365 * 24 * 60 * 60 * 1000; // Within 1 year
+        return consent.status === 'signed' && isRecent;
+      });
+
+      logger.debug('Checking consent status', { userId, hasValidConsent });
+      return hasValidConsent;
     } catch (error) {
       logger.error('Error checking consent', error);
       return false;

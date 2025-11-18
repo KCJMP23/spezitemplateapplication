@@ -12,6 +12,8 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
+    "test:integration": "tsx src/tests/run-integration-test.ts",
+    "test:imports": "tsx src/tests/verify-imports.ts",
     "cap:init": "cap init",
     "cap:sync": "cap sync",
     "cap:ios": "cap open ios",

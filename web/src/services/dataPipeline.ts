@@ -263,13 +263,71 @@ export class DataQualityService {
     timeliness: number;
     consistency: number;
   }> {
-    // Placeholder implementation
-    return {
-      completeness: 95,
-      accuracy: 98,
-      timeliness: 92,
-      consistency: 97,
-    };
+    try {
+      // Fetch recent data from Firestore
+      const data = await firebaseService.queryDocuments<any>(
+        `users/${userId}/${dataType}`,
+        [],
+        100
+      );
+
+      if (data.length === 0) {
+        return { completeness: 0, accuracy: 0, timeliness: 0, consistency: 0 };
+      }
+
+      // Calculate completeness (% of required fields filled)
+      const requiredFields = ['value', 'timestamp', 'type'];
+      let completeRecords = 0;
+      data.forEach((record) => {
+        const complete = requiredFields.every((field) => record[field] !== null && record[field] !== undefined);
+        if (complete) completeRecords++;
+      });
+      const completeness = (completeRecords / data.length) * 100;
+
+      // Calculate timeliness (% of data from last 7 days)
+      const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+      const recentData = data.filter((record) => {
+        const timestamp = record.timestamp?.toDate?.() || new Date(record.timestamp);
+        return timestamp.getTime() >= sevenDaysAgo;
+      });
+      const timeliness = (recentData.length / data.length) * 100;
+
+      // Calculate accuracy (% within expected ranges - using outlier detection)
+      const values = data.map((d) => d.value).filter((v) => typeof v === 'number');
+      const outliers = this.detectOutliers(values);
+      const accuracy = values.length > 0 ? ((values.length - outliers.length) / values.length) * 100 : 100;
+
+      // Calculate consistency (% with consistent intervals)
+      let consistentIntervals = 0;
+      if (data.length > 1) {
+        const sortedData = [...data].sort((a, b) => {
+          const aTime = a.timestamp?.toDate?.() || new Date(a.timestamp);
+          const bTime = b.timestamp?.toDate?.() || new Date(b.timestamp);
+          return aTime.getTime() - bTime.getTime();
+        });
+
+        for (let i = 1; i < sortedData.length; i++) {
+          const prev = sortedData[i - 1].timestamp?.toDate?.() || new Date(sortedData[i - 1].timestamp);
+          const curr = sortedData[i].timestamp?.toDate?.() || new Date(sortedData[i].timestamp);
+          const interval = curr.getTime() - prev.getTime();
+          // Consider consistent if within reasonable intervals (1 hour to 7 days)
+          if (interval >= 3600000 && interval <= 7 * 24 * 3600000) {
+            consistentIntervals++;
+          }
+        }
+      }
+      const consistency = data.length > 1 ? (consistentIntervals / (data.length - 1)) * 100 : 100;
+
+      return {
+        completeness: Math.round(completeness),
+        accuracy: Math.round(accuracy),
+        timeliness: Math.round(timeliness),
+        consistency: Math.round(consistency),
+      };
+    } catch (error) {
+      logger.error('Failed to generate quality report', error);
+      return { completeness: 0, accuracy: 0, timeliness: 0, consistency: 0 };
+    }
   }
 }
 
