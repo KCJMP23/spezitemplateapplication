@@ -4,6 +4,7 @@ import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
 import { AuthProvider, useAuth } from '@/hooks/useAuth';
 import { config } from '@/utils/config';
 import { logger } from '@/utils/logger';
+import schedulerService from '@/services/scheduler';
 
 // Lazy load components
 import { lazy, Suspense } from 'react';
@@ -247,6 +248,16 @@ function AppRoutes(): JSX.Element {
 function App(): JSX.Element {
   useEffect(() => {
     logger.info('App component mounted');
+
+    // Start background scheduler for tasks and notifications
+    schedulerService.start();
+    logger.info('Scheduler service started');
+
+    // Cleanup on unmount
+    return () => {
+      schedulerService.stop();
+      logger.info('Scheduler service stopped');
+    };
   }, []);
 
   return (

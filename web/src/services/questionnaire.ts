@@ -3,9 +3,11 @@ import {
   FHIRQuestionnaireResponse,
   QuestionnaireResponseItem,
 } from '@/types/fhir';
-import { ScheduledTask } from '@/types';
+import { ScheduledTask, RecurrenceRule } from '@/types';
 import firebaseService from './firebase';
 import fhirService from './fhir';
+import schedulerService from './scheduler';
+import notificationService from './notification';
 import { logger } from '@/utils/logger';
 import { auditService } from '@/utils/audit';
 import { generateUUID } from '@/utils/helpers';
@@ -116,10 +118,7 @@ class QuestionnaireService {
   // Get scheduled questionnaires for a user
   async getScheduledQuestionnaires(userId: string): Promise<ScheduledTask[]> {
     try {
-      const now = new Date();
-      const tasks = await firebaseService.queryDocuments<ScheduledTask>(
-        `users/${userId}/tasks`
-      );
+      const tasks = await schedulerService.getUserTasks(userId);
 
       // Filter for questionnaire tasks
       return tasks.filter(
@@ -139,36 +138,33 @@ class QuestionnaireService {
     userId: string,
     questionnaireId: string,
     scheduledFor: Date,
-    recurrence?: {
-      frequency: 'daily' | 'weekly' | 'monthly';
-      interval: number;
-    }
+    recurrence?: RecurrenceRule
   ): Promise<ScheduledTask> {
     try {
-      const task: ScheduledTask = {
-        id: generateUUID(),
+      const questionnaire = await this.loadQuestionnaire(questionnaireId);
+
+      const task = await schedulerService.scheduleTask(userId, {
         userId,
-        title: 'Complete Questionnaire',
-        description: 'Please complete your scheduled questionnaire',
+        title: questionnaire.title || 'Complete Questionnaire',
+        description: questionnaire.description || 'Please complete your scheduled questionnaire',
         taskType: 'questionnaire',
         status: 'pending',
         scheduledFor,
         questionnaireId,
+        recurrence,
         metadata: {
           questionnaireId,
         },
-      };
+      });
 
-      if (recurrence) {
-        task.recurrence = {
-          frequency: recurrence.frequency,
-          interval: recurrence.interval,
-        };
-      }
+      // Schedule notification reminder
+      await notificationService.sendQuestionnaireReminder(
+        userId,
+        task.title,
+        questionnaireId
+      );
 
-      await firebaseService.setDocument(`users/${userId}/tasks`, task.id, task);
-
-      logger.info('Questionnaire scheduled', {
+      logger.info('Questionnaire scheduled with reminder', {
         userId,
         questionnaireId,
         scheduledFor,
@@ -184,11 +180,7 @@ class QuestionnaireService {
   // Mark task as completed
   async completeTask(userId: string, taskId: string): Promise<void> {
     try {
-      await firebaseService.updateDocument(`users/${userId}/tasks`, taskId, {
-        status: 'completed',
-        completedAt: new Date(),
-      });
-
+      await schedulerService.completeTask(userId, taskId);
       logger.info('Task completed', { userId, taskId });
     } catch (error) {
       logger.error('Failed to complete task', error);
@@ -203,11 +195,7 @@ class QuestionnaireService {
     status: ScheduledTask['status']
   ): Promise<void> {
     try {
-      await firebaseService.updateDocument(`users/${userId}/tasks`, taskId, {
-        status,
-        ...(status === 'completed' ? { completedAt: new Date() } : {}),
-      });
-
+      await schedulerService.updateTaskStatus(userId, taskId, status);
       logger.info('Task status updated', { userId, taskId, status });
     } catch (error) {
       logger.error('Failed to update task status', error);
