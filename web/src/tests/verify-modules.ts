@@ -15,7 +15,7 @@ const __dirname = dirname(__filename);
 console.log('🔍 Verifying all Spezi modules...\n');
 
 const modules = [
-  { name: 'SpeziKit', path: '../services/speziKit.ts' },
+  { name: 'IntellicKit', path: '../services/intellicKit.ts' },
   { name: 'AccessGuard', path: '../services/accessGuard.ts' },
   { name: 'Networking', path: '../services/networking.ts' },
   { name: 'Devices', path: '../services/devices.ts' },

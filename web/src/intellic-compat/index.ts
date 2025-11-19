@@ -44,16 +44,16 @@ export { SchedulerModule, schedulerModule, type TaskCategory, type Schedule, typ
  * with all available modules.
  *
  * @example
- * import { initializeSpezi } from '@/spezi-compat';
+ * import { initializeIntellic } from '@/intellic-compat';
  *
- * await initializeSpezi({
+ * await initializeIntellic({
  *   modules: ['scheduler', 'storage', 'notifications'],
  *   config: {
  *     scheduler: { }
  *   }
  * });
  */
-export async function initializeSpezi(options?: {
+export async function initializeIntellic(options?: {
   modules?: string[];
   config?: Record<string, any>;
 }): Promise<HealthcareStandardType> {

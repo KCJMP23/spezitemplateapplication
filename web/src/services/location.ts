@@ -13,7 +13,7 @@ import { Geolocation, Position, PositionOptions } from '@capacitor/geolocation';
 import { limit } from 'firebase/firestore';
 import { logger } from '@/utils/logger';
 import { auditService } from '@/utils/audit';
-import { globalEventBus } from './speziKit';
+import { globalEventBus } from './intellicKit';
 import firebaseService from './firebase';
 
 // ===== Location Types =====

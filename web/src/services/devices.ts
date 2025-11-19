@@ -41,7 +41,7 @@
 import { Capacitor } from '@capacitor/core';
 import { Device, DeviceInfo } from '@capacitor/device';
 import { logger } from '@/utils/logger';
-import { globalEventBus } from './speziKit';
+import { globalEventBus } from './intellicKit';
 
 // ===== Device Types =====
 

@@ -12,7 +12,7 @@
 import { Motion, AccelListenerEvent } from '@capacitor/motion';
 import { PluginListenerHandle } from '@capacitor/core';
 import { logger } from '@/utils/logger';
-import { globalEventBus } from './speziKit';
+import { globalEventBus } from './intellicKit';
 import firebaseService from './firebase';
 
 // ===== Sensor Types =====

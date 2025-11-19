@@ -24,7 +24,7 @@ async function testImport(modulePath: string, name: string) {
 }
 
 // Test all imports
-await testImport('../services/speziKit', 'SpeziKit');
+await testImport('../services/intellicKit', 'IntellicKit');
 await testImport('../services/accessGuard', 'AccessGuard');
 await testImport('../services/networking', 'Networking');
 await testImport('../services/devices', 'Devices');

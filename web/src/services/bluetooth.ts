@@ -10,7 +10,7 @@
  */
 
 import { logger } from '@/utils/logger';
-import { globalEventBus } from './speziKit';
+import { globalEventBus } from './intellicKit';
 import { deviceManager, ConnectedDevice, DeviceType } from './devices';
 
 // ===== Bluetooth Types =====

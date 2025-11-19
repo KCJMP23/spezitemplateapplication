@@ -49,7 +49,7 @@ export class ModuleLoader {
     logger.info('Loading enabled modules...');
 
     // Core Infrastructure
-    if (this.config.speziKit) await this.loadModule('speziKit', () => import('./speziKit'));
+    if (this.config.intellicKit) await this.loadModule('intellicKit', () => import('./intellicKit'));
     if (this.config.accessGuard) await this.loadModule('accessGuard', () => import('./accessGuard'));
     if (this.config.networking) await this.loadModule('networking', () => import('./networking'));
 

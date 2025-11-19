@@ -9,7 +9,7 @@
  */
 
 import { logger } from '@/utils/logger';
-import { globalEventBus } from './speziKit';
+import { globalEventBus } from './intellicKit';
 
 export interface SpeechRecognitionResult {
   transcript: string;

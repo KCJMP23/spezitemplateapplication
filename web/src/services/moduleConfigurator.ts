@@ -4,13 +4,13 @@
  * Handles Spezi module configuration, initialization, and persistence.
  */
 
-import { healthcareStandard } from '@/spezi-compat';
-import { schedulerModule } from '@/spezi-compat/modules/SchedulerModule';
+import { healthcareStandard } from '@/intellic-compat';
+import { schedulerModule } from '@/intellic-compat/modules/SchedulerModule';
 import type { WizardConfig, ModuleConfig } from '@/components/IntellicConfigWizard';
 import { logger } from '@/utils/logger';
 import storageService from './storage';
 
-const CONFIG_STORAGE_KEY = 'spezi_module_config';
+const CONFIG_STORAGE_KEY = 'intellic_module_config';
 
 export interface InitializedModule {
   id: string;
@@ -183,10 +183,10 @@ class ModuleConfiguratorService {
 // Spezi Module Configuration
 // Generated from configuration wizard
 
-import { initializeSpezi } from '@/spezi-compat';
+import { initializeIntellic } from '@/intellic-compat';
 
 async function initializeApp() {
-  const config = await initializeSpezi({
+  const config = await initializeIntellic({
     modules: [${enabledModules.map((m) => `'${m.id}'`).join(', ')}],
     config: {
       // Add module-specific configuration here

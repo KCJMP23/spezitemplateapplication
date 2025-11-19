@@ -52,7 +52,7 @@ export async function example2_SpeziCompatibleLayer() {
   console.log('\n=== Approach 2: Spezi-Compatible Layer ===\n');
 
   // Import Spezi-compatible modules
-  const { healthcareStandard, SchedulerModule } = await import('@/spezi-compat');
+  const { healthcareStandard, SchedulerModule } = await import('@/intellic-compat');
 
   // Initialize the healthcare standard with modules
   console.log('Initializing Healthcare Standard...');
@@ -65,7 +65,7 @@ export async function example2_SpeziCompatibleLayer() {
   // Use Spezi-style API
   console.log('Creating task via Spezi API...');
   await scheduler.createOrUpdateTask({
-    id: 'spezi-task-1',
+    id: 'intellic-task-1',
     title: 'Daily Questionnaire',
     userId: 'demo-user-123',
     instructions: 'Please complete your daily health questionnaire',
@@ -110,10 +110,10 @@ export async function example3_FullSpeziArchitecture() {
 
   // Import Spezi core
   const { BaseModule, Injectable, HealthcareStandard, SchedulerModule } =
-    await import('@/spezi-compat');
+    await import('@/intellic-compat');
 
   // Import types
-  type ModuleMetadata = import('@/spezi-compat').ModuleMetadata;
+  type ModuleMetadata = import('@/intellic-compat').ModuleMetadata;
 
   // Create a custom research module
   console.log('Creating custom Spezi module...');
@@ -122,7 +122,7 @@ export async function example3_FullSpeziArchitecture() {
   class ResearchModule extends BaseModule {
     // Dependency injection - get scheduler dynamically
     private get scheduler(): InstanceType<typeof SchedulerModule> {
-      const { DependencyContainer } = require('@/spezi-compat/Dependency');
+      const { DependencyContainer } = require('@/intellic-compat/Dependency');
       return DependencyContainer.getInstance().resolve('scheduler');
     }
 
@@ -194,7 +194,7 @@ export async function example4_MixedApproach() {
   console.log('\n=== Mixed Approach: All Three Together ===\n');
 
   // Initialize Spezi-compatible layer
-  const { healthcareStandard, SchedulerModule } = await import('@/spezi-compat');
+  const { healthcareStandard, SchedulerModule } = await import('@/intellic-compat');
   await healthcareStandard.initialize([new SchedulerModule()]);
 
   // Also import direct services
@@ -269,6 +269,6 @@ export async function runAllExamples() {
 // Export for testing
 if (import.meta.env.DEV) {
   console.log('Run examples with:');
-  console.log('  import { runAllExamples } from "@/spezi-compat/examples"');
+  console.log('  import { runAllExamples } from "@/intellic-compat/examples"');
   console.log('  await runAllExamples()');
 }

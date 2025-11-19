@@ -9,7 +9,7 @@
  */
 
 // Import all services
-import { moduleManager, serviceContainer, globalEventBus } from '../services/speziKit';
+import { moduleManager, serviceContainer, globalEventBus } from '../services/intellicKit';
 import { accessGuardService } from '../services/accessGuard';
 import { httpClient, networkMonitor } from '../services/networking';
 import { deviceManager } from '../services/devices';
@@ -81,7 +81,7 @@ export class IntegrationTester {
     console.log('📦 Testing Service Imports...');
 
     const services = [
-      { name: 'SpeziKit', service: moduleManager },
+      { name: 'IntellicKit', service: moduleManager },
       { name: 'AccessGuard', service: accessGuardService },
       { name: 'Networking', service: httpClient },
       { name: 'Devices', service: deviceManager },

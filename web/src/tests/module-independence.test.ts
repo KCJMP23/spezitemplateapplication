@@ -26,7 +26,7 @@ export class ModuleIndependenceTest {
     }>;
   } {
     const modules: Array<keyof ModuleConfig> = [
-      'speziKit',
+      'intellicKit',
       'accessGuard',
       'networking',
       'storage',
@@ -47,7 +47,7 @@ export class ModuleIndependenceTest {
       'llm',
       'dataPipeline',
       'speech',
-      'speziViews',
+      'intellicViews',
       'license',
     ];
 
@@ -132,17 +132,17 @@ export class ModuleIndependenceTest {
         config: this.createFullConfig(true),
       },
       {
-        name: 'All disabled except speziKit',
+        name: 'All disabled except intellicKit',
         config: {
           ...this.createFullConfig(false),
-          speziKit: true,
+          intellicKit: true,
         },
       },
       {
         name: 'Core only',
         config: {
           ...this.createFullConfig(false),
-          speziKit: true,
+          intellicKit: true,
           storage: true,
           fhir: true,
         },
@@ -151,7 +151,7 @@ export class ModuleIndependenceTest {
         name: 'Patient features',
         config: {
           ...this.createFullConfig(false),
-          speziKit: true,
+          intellicKit: true,
           storage: true,
           scheduler: true,
           notifications: true,
@@ -164,7 +164,7 @@ export class ModuleIndependenceTest {
         name: 'Provider features',
         config: {
           ...this.createFullConfig(false),
-          speziKit: true,
+          intellicKit: true,
           storage: true,
           accessGuard: true,
           fhir: true,
@@ -196,7 +196,7 @@ export class ModuleIndependenceTest {
 
   private createFullConfig(value: boolean): ModuleConfig {
     return {
-      speziKit: value,
+      intellicKit: value,
       accessGuard: value,
       networking: value,
       storage: value,
@@ -217,7 +217,7 @@ export class ModuleIndependenceTest {
       llm: value,
       dataPipeline: value,
       speech: value,
-      speziViews: value,
+      intellicViews: value,
       license: value,
     };
   }
@@ -228,9 +228,9 @@ export class ModuleIndependenceTest {
   } {
     const errors: string[] = [];
 
-    // SpeziKit is always required
-    if (!config.speziKit) {
-      errors.push('SpeziKit is required');
+    // IntellicKit is always required
+    if (!config.intellicKit) {
+      errors.push('IntellicKit is required');
     }
 
     // Check dependencies

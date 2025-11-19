@@ -1,7 +1,7 @@
 /**
  * Modular Configuration System
  *
- * This configuration allows you to enable/disable Spezi modules based on your app's needs.
+ * This configuration allows you to enable/disable INTELLIC modules based on your app's needs.
  * Each module can be independently enabled or disabled to reduce bundle size and complexity.
  *
  * Usage:
@@ -12,7 +12,7 @@
 
 export interface ModuleConfig {
   // ===== Core Infrastructure =====
-  speziKit: boolean;             // Event bus, DI, lifecycle management (REQUIRED)
+  intellicKit: boolean;             // Event bus, DI, lifecycle management (REQUIRED)
   accessGuard: boolean;          // RBAC, permissions, HIPAA compliance
   networking: boolean;           // HTTP client, API utilities
 
@@ -45,7 +45,7 @@ export interface ModuleConfig {
   speech: boolean;               // Speech recognition and synthesis
 
   // ===== UI Components =====
-  speziViews: boolean;           // Common UI components
+  intellicViews: boolean;           // Common UI components
   license: boolean;              // License and attribution display
 }
 
@@ -54,7 +54,7 @@ export interface ModuleConfig {
 
 export const DEFAULT_MODULE_CONFIG: ModuleConfig = {
   // Core (always recommended)
-  speziKit: true,
+  intellicKit: true,
   accessGuard: true,
   networking: true,
 
@@ -87,14 +87,14 @@ export const DEFAULT_MODULE_CONFIG: ModuleConfig = {
   speech: true,
 
   // UI Components
-  speziViews: true,
+  intellicViews: true,
   license: true,
 };
 
 // ===== Preset Configurations =====
 
 export const MINIMAL_CONFIG: ModuleConfig = {
-  speziKit: true,
+  intellicKit: true,
   accessGuard: true,
   networking: true,
   storage: true,
@@ -115,12 +115,12 @@ export const MINIMAL_CONFIG: ModuleConfig = {
   llm: false,
   dataPipeline: false,
   speech: false,
-  speziViews: true,
+  intellicViews: true,
   license: true,
 };
 
 export const PATIENT_APP_CONFIG: ModuleConfig = {
-  speziKit: true,
+  intellicKit: true,
   accessGuard: true,
   networking: true,
   storage: true,
@@ -141,12 +141,12 @@ export const PATIENT_APP_CONFIG: ModuleConfig = {
   llm: false,
   dataPipeline: false,
   speech: false,
-  speziViews: true,
+  intellicViews: true,
   license: true,
 };
 
 export const PROVIDER_APP_CONFIG: ModuleConfig = {
-  speziKit: true,
+  intellicKit: true,
   accessGuard: true,
   networking: true,
   storage: true,
@@ -167,12 +167,12 @@ export const PROVIDER_APP_CONFIG: ModuleConfig = {
   llm: true,
   dataPipeline: true,
   speech: false,
-  speziViews: true,
+  intellicViews: true,
   license: true,
 };
 
 export const RESEARCHER_APP_CONFIG: ModuleConfig = {
-  speziKit: true,
+  intellicKit: true,
   accessGuard: true,
   networking: true,
   storage: true,
@@ -193,7 +193,7 @@ export const RESEARCHER_APP_CONFIG: ModuleConfig = {
   llm: true,
   dataPipeline: true,
   speech: false,
-  speziViews: true,
+  intellicViews: true,
   license: true,
 };
 
@@ -206,28 +206,28 @@ export const ACTIVE_MODULE_CONFIG: ModuleConfig = DEFAULT_MODULE_CONFIG;
 // This defines which modules depend on others
 
 export const MODULE_DEPENDENCIES: Record<keyof ModuleConfig, Array<keyof ModuleConfig>> = {
-  speziKit: [],
-  accessGuard: ['speziKit'],
-  networking: ['speziKit', 'storage'],
-  storage: ['speziKit'],
-  scheduler: ['speziKit', 'storage', 'notifications'],
-  notifications: ['speziKit', 'storage'],
-  devices: ['speziKit'],
-  bluetooth: ['speziKit', 'devices'],
-  location: ['speziKit', 'devices'],
-  sensorKit: ['speziKit', 'devices'],
+  intellicKit: [],
+  accessGuard: ['intellicKit'],
+  networking: ['intellicKit', 'storage'],
+  storage: ['intellicKit'],
+  scheduler: ['intellicKit', 'storage', 'notifications'],
+  notifications: ['intellicKit', 'storage'],
+  devices: ['intellicKit'],
+  bluetooth: ['intellicKit', 'devices'],
+  location: ['intellicKit', 'devices'],
+  sensorKit: ['intellicKit', 'devices'],
   fhir: [],
   fhirAdapters: ['fhir', 'storage'],
-  healthData: ['speziKit', 'storage', 'fhir'],
-  questionnaire: ['speziKit', 'storage', 'fhir', 'scheduler'],
-  consent: ['speziKit', 'storage'],
-  medication: ['speziKit', 'storage', 'scheduler', 'notifications', 'fhir'],
-  chat: ['speziKit', 'storage', 'notifications'],
-  study: ['speziKit', 'storage', 'accessGuard'],
-  llm: ['speziKit', 'networking'],
-  dataPipeline: ['speziKit', 'storage'],
-  speech: ['speziKit'],
-  speziViews: [],
+  healthData: ['intellicKit', 'storage', 'fhir'],
+  questionnaire: ['intellicKit', 'storage', 'fhir', 'scheduler'],
+  consent: ['intellicKit', 'storage'],
+  medication: ['intellicKit', 'storage', 'scheduler', 'notifications', 'fhir'],
+  chat: ['intellicKit', 'storage', 'notifications'],
+  study: ['intellicKit', 'storage', 'accessGuard'],
+  llm: ['intellicKit', 'networking'],
+  dataPipeline: ['intellicKit', 'storage'],
+  speech: ['intellicKit'],
+  intellicViews: [],
   license: [],
 };
 
@@ -242,8 +242,8 @@ export function validateModuleConfig(config: ModuleConfig): {
   const warnings: string[] = [];
 
   // Check required modules
-  if (!config.speziKit) {
-    errors.push('SpeziKit is required and cannot be disabled');
+  if (!config.intellicKit) {
+    errors.push('IntellicKit is required and cannot be disabled');
   }
 
   // Check dependencies
