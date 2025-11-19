@@ -1,6 +1,6 @@
-# Healthcare PWA - Spezi-Inspired Digital Health Platform
+# INTELLIC x Precognitive Health - Digital Health Platform
 
-> **Important**: This is a **web-based healthcare application inspired by Stanford Spezi**, not a direct port of iOS Spezi modules. It provides similar healthcare functionality using React/TypeScript and modern web technologies.
+> **Important**: This is a **web-based healthcare application by INTELLIC x Precognitive Health, inspired by Stanford Spezi**, not a direct port of iOS Spezi modules. It provides similar healthcare functionality using React/TypeScript and modern web technologies.
 
 A modular Progressive Web App for healthcare research, supporting patients, providers, and researchers with FHIR-compliant data management and wearable integration.
 

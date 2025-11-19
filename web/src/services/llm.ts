@@ -1,5 +1,6 @@
 /**
- * SpeziLLM React Migration
+ * INTELLIC x Precognitive Health Module
+ * INTELLIC LLM Module
  *
  * AI and LLM integration:
  * - LLM chat interface

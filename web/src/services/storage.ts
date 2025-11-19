@@ -2,7 +2,7 @@ import localforage from 'localforage';
 import { logger } from '@/utils/logger';
 
 /**
- * SpeziStorage React Migration
+ * INTELLIC Storage Module
  *
  * Migrates iOS SpeziStorage functionality to React/Web:
  * - Offline-first storage with IndexedDB

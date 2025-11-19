@@ -1,5 +1,5 @@
 /**
- * SpeziStudy React Migration
+ * INTELLIC Study Module
  *
  * Study management:
  * - Clinical study enrollment

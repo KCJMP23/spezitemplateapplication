@@ -1,15 +1,15 @@
 /**
- * Spezi Compatibility Layer - Main Export
+ * INTELLIC Compatibility Layer - Main Export
  *
- * This module provides Spezi-compatible architecture for TypeScript/React applications.
- * It allows using Spezi patterns (Module, Standard, Dependency Injection) on the web.
+ * This module provides INTELLIC-compatible architecture for TypeScript/React applications.
+ * It allows using INTELLIC patterns (Module, Standard, Dependency Injection) on the web.
  *
  * See README.md for detailed documentation and examples.
  */
 
 import type { HealthcareStandard as HealthcareStandardType } from './HealthcareStandard';
 
-// Core Spezi patterns
+// Core INTELLIC patterns
 export { type Module, BaseModule, type ModuleMetadata, type ModuleConfiguration, ModuleState } from './Module';
 export {
   type Standard,
@@ -38,7 +38,7 @@ export type { HealthcareStandard as HealthcareStandardType } from './HealthcareS
 export { SchedulerModule, schedulerModule, type TaskCategory, type Schedule, type CompletionPolicy, type TaskPredicate } from './modules/SchedulerModule';
 
 /**
- * Initialize the Spezi-compatible system
+ * Initialize the INTELLIC-compatible system
  *
  * This is a convenience function that sets up the Healthcare Standard
  * with all available modules.

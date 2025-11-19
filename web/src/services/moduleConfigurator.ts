@@ -6,7 +6,7 @@
 
 import { healthcareStandard } from '@/spezi-compat';
 import { schedulerModule } from '@/spezi-compat/modules/SchedulerModule';
-import type { WizardConfig, ModuleConfig } from '@/components/SpeziConfigWizard';
+import type { WizardConfig, ModuleConfig } from '@/components/IntellicConfigWizard';
 import { logger } from '@/utils/logger';
 import storageService from './storage';
 
@@ -25,11 +25,11 @@ class ModuleConfiguratorService {
   private currentConfig: WizardConfig | null = null;
 
   /**
-   * Initialize Spezi modules based on wizard configuration
+   * Initialize INTELLIC modules based on wizard configuration
    */
   async initializeFromConfig(config: WizardConfig): Promise<InitializedModule[]> {
     try {
-      logger.info('Initializing Spezi modules from configuration', {
+      logger.info('Initializing INTELLIC modules from configuration', {
         appType: config.appType,
         moduleCount: config.modules.filter((m) => m.enabled).length,
       });
@@ -78,7 +78,7 @@ class ModuleConfiguratorService {
         // Save configuration to storage
         await this.saveConfiguration(config);
 
-        logger.info('Spezi modules initialized successfully', {
+        logger.info('INTELLIC modules initialized successfully', {
           moduleCount: results.filter((r) => r.status === 'initialized').length,
         });
       } catch (error) {
@@ -193,7 +193,7 @@ async function initializeApp() {
     }
   });
 
-  console.log('Spezi modules initialized:', config);
+  console.log('INTELLIC modules initialized:', config);
 }
 
 initializeApp();

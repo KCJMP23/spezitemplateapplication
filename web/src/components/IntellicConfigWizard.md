@@ -1,6 +1,6 @@
-# Spezi Module Configuration Wizard
+# INTELLIC x Precognitive Health Module Configuration Wizard
 
-An interactive wizard that helps users select and configure Spezi modules based on their healthcare application requirements.
+An interactive wizard that helps users select and configure INTELLIC x Precognitive Health modules based on their healthcare application requirements.
 
 ## Overview
 
@@ -52,7 +52,7 @@ Auto-enables: healthData (dependency)
 ### Basic Usage
 
 ```tsx
-import SpeziConfigWizard from '@/components/SpeziConfigWizard';
+import IntellicConfigWizard from '@/components/IntellicConfigWizard';
 
 function MyApp() {
   const handleComplete = (config) => {
@@ -60,14 +60,14 @@ function MyApp() {
     // Initialize modules with the configuration
   };
 
-  return <SpeziConfigWizard onComplete={handleComplete} />;
+  return <IntellicConfigWizard onComplete={handleComplete} />;
 }
 ```
 
 ### With Module Configurator Service
 
 ```tsx
-import SpeziConfigWizard from '@/components/SpeziConfigWizard';
+import IntellicConfigWizard from '@/components/IntellicConfigWizard';
 import moduleConfiguratorService from '@/services/moduleConfigurator';
 
 function Setup() {
@@ -79,7 +79,7 @@ function Setup() {
   };
 
   return (
-    <SpeziConfigWizard
+    <IntellicConfigWizard
       onComplete={handleComplete}
       onCancel={() => console.log('Wizard cancelled')}
     />
@@ -367,7 +367,7 @@ Modules using direct service layer (not yet wrapped):
 
 ### Adding New Application Types
 
-Edit `APP_TYPES` in `SpeziConfigWizard.tsx`:
+Edit `APP_TYPES` in `IntellicConfigWizard.tsx`:
 
 ```typescript
 const APP_TYPES = [
@@ -383,7 +383,7 @@ const APP_TYPES = [
 
 ### Adding New Modules
 
-Edit `AVAILABLE_MODULES` in `SpeziConfigWizard.tsx`:
+Edit `AVAILABLE_MODULES` in `IntellicConfigWizard.tsx`:
 
 ```typescript
 const AVAILABLE_MODULES = [

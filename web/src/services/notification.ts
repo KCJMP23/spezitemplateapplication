@@ -5,7 +5,7 @@ import { generateUUID } from '@/utils/helpers';
 import firebaseService from './firebase';
 
 /**
- * SpeziNotifications React Migration
+ * INTELLIC Notifications Module
  *
  * Migrates iOS SpeziNotifications functionality to React/Web:
  * - Web Push API for web notifications

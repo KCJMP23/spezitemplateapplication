@@ -1,5 +1,5 @@
 /**
- * SpeziLocation React Migration
+ * INTELLIC Location Module
  *
  * Location services:
  * - Geolocation API

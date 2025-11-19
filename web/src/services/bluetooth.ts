@@ -1,5 +1,5 @@
 /**
- * SpeziBluetooth React Migration
+ * INTELLIC Bluetooth Module
  *
  * Bluetooth device connectivity:
  * - Web Bluetooth API integration

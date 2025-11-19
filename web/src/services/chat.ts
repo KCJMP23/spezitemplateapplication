@@ -1,5 +1,5 @@
 /**
- * SpeziChat React Migration
+ * INTELLIC Chat Module
  *
  * Chat and messaging:
  * - Real-time messaging

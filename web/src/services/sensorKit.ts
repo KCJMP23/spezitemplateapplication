@@ -1,5 +1,5 @@
 /**
- * SpeziSensorKit React Migration
+ * INTELLIC SensorKit Module
  *
  * Sensor data collection:
  * - Motion sensors (accelerometer, gyroscope)

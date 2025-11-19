@@ -1,12 +1,12 @@
-## Spezi Compatibility Layer
+## INTELLIC Compatibility Layer
 
-This directory contains a **Spezi-compatible architecture layer** that allows using Stanford Spezi patterns (Module, Standard, Dependency Injection) in TypeScript/React applications.
+This directory contains a **INTELLIC-compatible architecture layer** that allows using Stanford INTELLIC patterns (Module, Standard, Dependency Injection) in TypeScript/React applications.
 
 ### Purpose
 
 This layer serves three goals:
 
-1. **Bridge to Spezi iOS** - Enables future integration with actual Spezi modules
+1. **Bridge to Stanford Spezi iOS** - Enables future integration with actual Spezi modules
 2. **Familiar API** - Provides Spezi-style APIs for iOS developers transitioning to web
 3. **Progressive Enhancement** - Works alongside existing service layer without breaking changes
 
@@ -41,7 +41,7 @@ await schedulerService.scheduleTask('user123', task);
 - ✅ Full TypeScript support
 
 **Cons**:
-- ❌ Not compatible with Spezi iOS
+- ❌ Not compatible with Stanford Spezi iOS
 - ❌ Manual dependency management
 - ❌ No standard coordinator pattern
 
@@ -78,7 +78,7 @@ await scheduler.createOrUpdateTask({
 ```
 
 **Pros**:
-- ✅ Spezi-compatible API
+- ✅ INTELLIC-compatible API
 - ✅ Familiar to iOS developers
 - ✅ Central coordinator (Standard)
 - ✅ Works with existing services
@@ -145,7 +145,7 @@ await standard.initialize([
 - ✅ Full Spezi architecture
 - ✅ Proper dependency injection
 - ✅ Module lifecycle management
-- ✅ Most compatible with Spezi iOS
+- ✅ Most compatible with Stanford Spezi iOS
 
 **Cons**:
 - ⚠️ More boilerplate
@@ -229,7 +229,7 @@ class MyModule extends BaseModule {
 
 ### SchedulerModule
 
-Spezi-compatible task scheduling.
+INTELLIC-compatible task scheduling.
 
 ```typescript
 import { SchedulerModule } from '@/spezi-compat';
@@ -398,9 +398,9 @@ export class MyServiceModule extends BaseModule {
 
 ---
 
-## Comparison with Spezi iOS
+## Comparison with Stanford Spezi iOS
 
-| Feature | Spezi iOS | This Implementation | Status |
+| Feature | Stanford Spezi iOS | This Implementation | Status |
 |---------|-----------|---------------------|--------|
 | Module Protocol | ✅ | ✅ | Complete |
 | Standard Protocol | ✅ | ✅ | Complete |
@@ -454,13 +454,13 @@ describe('Spezi Module System', () => {
 
 ## FAQs
 
-**Q: Do I have to use the Spezi-compatible layer?**
+**Q: Do I have to use the INTELLIC-compatible layer?**
 A: No! The direct service layer still works. Use what fits your needs.
 
 **Q: Can I mix approaches?**
 A: Yes! You can use direct services in some places and Spezi modules in others.
 
-**Q: Is this compatible with actual Spezi iOS modules?**
+**Q: Is this compatible with actual Stanford Spezi iOS modules?**
 A: The API signatures match where possible, but there's no runtime compatibility (different platforms/languages).
 
 **Q: What's the performance overhead?**

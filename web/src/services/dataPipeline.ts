@@ -1,5 +1,5 @@
 /**
- * SpeziDataPipeline React Migration
+ * INTELLIC DataPipeline Module
  *
  * Data processing pipeline:
  * - Data transformation

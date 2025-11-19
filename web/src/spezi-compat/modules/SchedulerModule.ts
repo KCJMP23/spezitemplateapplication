@@ -1,7 +1,7 @@
 /**
- * Spezi Scheduler Module - Spezi-Compatible Wrapper
+ * INTELLIC Scheduler Module - INTELLIC-Compatible Wrapper
  *
- * This wraps our existing scheduler service to be compatible with Spezi's Module pattern.
+ * This wraps our existing scheduler service to be compatible with INTELLIC's Module pattern.
  * It demonstrates how to bridge existing services to the Spezi architecture.
  *
  * Reference: https://github.com/StanfordSpezi/SpeziScheduler

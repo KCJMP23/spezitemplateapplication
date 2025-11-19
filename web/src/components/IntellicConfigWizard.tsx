@@ -1,7 +1,7 @@
 /**
- * Spezi Module Configuration Wizard
+ * INTELLIC x Precognitive Health Module Configuration Wizard
  *
- * An interactive wizard that helps users select and configure Spezi modules
+ * An interactive wizard that helps users select and configure INTELLIC x Precognitive Health modules
  * based on their healthcare application requirements.
  */
 
@@ -65,7 +65,7 @@ export interface WizardConfig {
   modules: ModuleConfig[];
 }
 
-interface SpeziConfigWizardProps {
+interface IntellicConfigWizardProps {
   onComplete: (config: WizardConfig) => void;
   onCancel?: () => void;
 }
@@ -192,7 +192,7 @@ const AVAILABLE_MODULES = [
   },
 ];
 
-export const SpeziConfigWizard: React.FC<SpeziConfigWizardProps> = ({ onComplete, onCancel }) => {
+export const IntellicConfigWizard: React.FC<IntellicConfigWizardProps> = ({ onComplete, onCancel }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [config, setConfig] = useState<Partial<WizardConfig>>({
     appType: 'custom',
@@ -541,7 +541,7 @@ export const SpeziConfigWizard: React.FC<SpeziConfigWizardProps> = ({ onComplete
       content: (
         <Box>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            Select the Spezi modules to include in your application:
+            Select the INTELLIC modules to include in your application:
           </Typography>
 
           {getRecommendedModules().length > 0 && (
@@ -717,7 +717,7 @@ export const SpeziConfigWizard: React.FC<SpeziConfigWizardProps> = ({ onComplete
   return (
     <Box sx={{ maxWidth: 800, mx: 'auto', p: 3 }}>
       <Typography variant="h4" sx={{ mb: 1 }}>
-        Spezi Module Configuration
+        INTELLIC x Precognitive Health Module Configuration
       </Typography>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
         Answer a few questions to configure your healthcare application
@@ -754,4 +754,4 @@ export const SpeziConfigWizard: React.FC<SpeziConfigWizardProps> = ({ onComplete
   );
 };
 
-export default SpeziConfigWizard;
+export default IntellicConfigWizard;

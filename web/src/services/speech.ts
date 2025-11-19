@@ -1,5 +1,5 @@
 /**
- * SpeziSpeech React Migration
+ * INTELLIC Speech Module
  *
  * Speech recognition and synthesis:
  * - Speech-to-text

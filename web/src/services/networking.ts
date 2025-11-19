@@ -1,5 +1,5 @@
 /**
- * SpeziNetworking React Migration
+ * INTELLIC Networking Module
  *
  * Networking and API utilities:
  * - HTTP client with interceptors

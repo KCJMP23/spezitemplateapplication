@@ -1,5 +1,6 @@
 /**
- * SpeziDevices React Migration
+ * INTELLIC x Precognitive Health Module
+ * INTELLIC Devices Module
  *
  * Device integration and management:
  * - Connected device tracking

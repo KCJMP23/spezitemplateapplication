@@ -6,7 +6,8 @@ import { auditService } from '@/utils/audit';
 import { generateUUID } from '@/utils/helpers';
 
 /**
- * SpeziScheduler React Migration
+ * INTELLIC x Precognitive Health Module
+ * INTELLIC Scheduler Module
  *
  * Migrates iOS SpeziScheduler functionality to React/Web:
  * - Task scheduling with recurrence

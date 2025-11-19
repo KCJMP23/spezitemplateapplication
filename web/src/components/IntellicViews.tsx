@@ -1,7 +1,7 @@
 /**
- * SpeziViews React Migration
+ * INTELLICViews React Migration
  *
- * Migrates iOS SpeziViews functionality to React/Web:
+ * Migrates iOS INTELLICViews functionality to React/Web:
  * - Common UI components for consistent design
  * - Instruction tiles
  * - Event action buttons

@@ -33,7 +33,7 @@ import {
   Code as CodeIcon,
   Refresh as RefreshIcon,
 } from '@mui/icons-material';
-import SpeziConfigWizard, { WizardConfig } from '@/components/SpeziConfigWizard';
+import IntellicConfigWizard, { WizardConfig } from '@/components/IntellicConfigWizard';
 import moduleConfiguratorService, { InitializedModule } from '@/services/moduleConfigurator';
 import { logger } from '@/utils/logger';
 
@@ -185,7 +185,7 @@ export const ModuleSetupView: React.FC = () => {
 
   if (showWizard) {
     return (
-      <SpeziConfigWizard
+      <IntellicConfigWizard
         onComplete={handleWizardComplete}
         onCancel={() => {
           if (currentConfig) {

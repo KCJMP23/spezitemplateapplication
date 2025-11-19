@@ -1,5 +1,5 @@
 /**
- * SpeziMedication React Migration
+ * INTELLIC Medication Module
  *
  * Medication tracking and management:
  * - Medication list

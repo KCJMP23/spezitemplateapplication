@@ -1,5 +1,5 @@
 /**
- * SpeziAccessGuard React Migration
+ * INTELLIC AccessGuard Module
  *
  * Access control and permissions management:
  * - Role-based access control (RBAC)

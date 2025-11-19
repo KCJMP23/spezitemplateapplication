@@ -1,5 +1,5 @@
 /**
- * SpeziKit React Migration
+ * INTELLIC Kit Module
  *
  * Core Spezi utilities and helpers:
  * - Component lifecycle management
