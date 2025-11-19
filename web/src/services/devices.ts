@@ -7,6 +7,34 @@
  * - Platform-specific features
  * - Device health monitoring
  * - Battery and connection status
+ *
+ * ## Device Discovery - Partial Implementation
+ *
+ * The `startScan()` method currently uses a simulated device discovery process.
+ * For production use with actual Bluetooth/USB devices, implement device-specific
+ * discovery using Web Bluetooth API or Capacitor plugins:
+ *
+ * **Bluetooth Devices** (Blood pressure monitors, glucometers, etc.):
+ * ```typescript
+ * const device = await navigator.bluetooth.requestDevice({
+ *   filters: [{ services: ['heart_rate'] }]
+ * });
+ * ```
+ *
+ * **USB Devices** (Medical equipment):
+ * ```typescript
+ * const device = await navigator.usb.requestDevice({
+ *   filters: [{ vendorId: 0x1234 }]
+ * });
+ * ```
+ *
+ * **Capacitor Bluetooth Plugin** (For native apps):
+ * ```typescript
+ * import { BleClient } from '@capacitor-community/bluetooth-le';
+ * await BleClient.requestDevice({
+ *   services: ['heart_rate']
+ * });
+ * ```
  */
 
 import { Capacitor } from '@capacitor/core';
@@ -203,10 +231,31 @@ export class DeviceDiscovery {
     logger.info('Starting device scan', { deviceTypes });
     globalEventBus.emit('device:scan:start');
 
-    // Implement actual device discovery based on type
-    // This would integrate with Bluetooth, USB, etc.
+    // ⚠️ SIMULATED IMPLEMENTATION - Replace with real device discovery
+    //
+    // For production, implement device type-specific scanning:
+    //
+    // if (deviceTypes.includes('bluetooth')) {
+    //   await this.scanBluetoothDevices();
+    // }
+    // if (deviceTypes.includes('usb')) {
+    //   await this.scanUSBDevices();
+    // }
+    //
+    // Example Bluetooth scan:
+    // try {
+    //   const device = await navigator.bluetooth.requestDevice({
+    //     acceptAllDevices: true,
+    //     optionalServices: ['battery_service', 'device_information']
+    //   });
+    //   this.handleDeviceDiscovered(device);
+    // } catch (error) {
+    //   logger.error('Bluetooth scan failed', error);
+    // }
 
-    // Placeholder: simulate discovery
+    logger.warn('Device scanning is simulated. Implement real device discovery for production.');
+
+    // Simulated scan timeout
     setTimeout(() => {
       this.stopScan();
     }, 5000);

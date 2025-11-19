@@ -303,15 +303,103 @@ class StorageService {
 
   // ===== Encryption Support =====
 
+  /**
+   * Derive encryption key from passphrase using PBKDF2
+   */
+  private async deriveKey(passphrase: string, salt: BufferSource): Promise<CryptoKey> {
+    const encoder = new TextEncoder();
+    const passphraseKey = await crypto.subtle.importKey(
+      'raw',
+      encoder.encode(passphrase),
+      'PBKDF2',
+      false,
+      ['deriveBits', 'deriveKey']
+    );
+
+    return crypto.subtle.deriveKey(
+      {
+        name: 'PBKDF2',
+        salt: salt,
+        iterations: 100000,
+        hash: 'SHA-256',
+      },
+      passphraseKey,
+      { name: 'AES-GCM', length: 256 },
+      false,
+      ['encrypt', 'decrypt']
+    );
+  }
+
+  /**
+   * Encrypt data using AES-GCM with passphrase
+   */
+  private async encrypt(data: string, passphrase: string): Promise<string> {
+    // Generate random salt and IV
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+
+    // Derive key from passphrase
+    const key = await this.deriveKey(passphrase, salt);
+
+    // Encrypt data
+    const encoder = new TextEncoder();
+    const encryptedData = await crypto.subtle.encrypt(
+      { name: 'AES-GCM', iv },
+      key,
+      encoder.encode(data)
+    );
+
+    // Combine salt + IV + encrypted data
+    const combined = new Uint8Array(salt.length + iv.length + encryptedData.byteLength);
+    combined.set(salt, 0);
+    combined.set(iv, salt.length);
+    combined.set(new Uint8Array(encryptedData), salt.length + iv.length);
+
+    // Convert to base64
+    return btoa(String.fromCharCode(...combined));
+  }
+
+  /**
+   * Decrypt data using AES-GCM with passphrase
+   */
+  private async decrypt(encryptedBase64: string, passphrase: string): Promise<string> {
+    // Decode from base64
+    const combined = new Uint8Array(
+      atob(encryptedBase64)
+        .split('')
+        .map((c) => c.charCodeAt(0))
+    );
+
+    // Extract salt, IV, and encrypted data
+    const salt = combined.slice(0, 16);
+    const iv = combined.slice(16, 28);
+    const encryptedData = combined.slice(28);
+
+    // Derive key from passphrase
+    const key = await this.deriveKey(passphrase, salt);
+
+    // Decrypt data
+    const decryptedData = await crypto.subtle.decrypt(
+      { name: 'AES-GCM', iv },
+      key,
+      encryptedData
+    );
+
+    // Convert to string
+    const decoder = new TextDecoder();
+    return decoder.decode(decryptedData);
+  }
+
+  /**
+   * Store data securely with AES-256-GCM encryption
+   */
   async setSecure<T>(key: string, value: T, passphrase: string): Promise<T> {
     try {
-      // In a real implementation, use crypto.subtle API for encryption
-      // For now, just store it (would need proper encryption in production)
-      const encrypted = JSON.stringify(value); // Placeholder
+      const jsonData = JSON.stringify(value);
+      const encrypted = await this.encrypt(jsonData, passphrase);
       await this.store.setItem(`secure_${key}`, encrypted);
 
-      logger.warn('Secure storage using placeholder encryption');
-      logger.debug('Secure data stored', { key });
+      logger.debug('Secure data stored (AES-256-GCM)', { key });
 
       return value;
     } catch (error) {
@@ -320,6 +408,9 @@ class StorageService {
     }
   }
 
+  /**
+   * Retrieve securely stored data with AES-256-GCM decryption
+   */
   async getSecure<T>(key: string, passphrase: string): Promise<T | null> {
     try {
       const encrypted = await this.store.getItem<string>(`secure_${key}`);
@@ -328,12 +419,10 @@ class StorageService {
         return null;
       }
 
-      // In a real implementation, decrypt using crypto.subtle API
-      const decrypted = JSON.parse(encrypted) as T; // Placeholder
-
-      return decrypted;
+      const decrypted = await this.decrypt(encrypted, passphrase);
+      return JSON.parse(decrypted) as T;
     } catch (error) {
-      logger.error('Failed to get secure data', error);
+      logger.error('Failed to get secure data (wrong passphrase or corrupted data)', error);
       return null;
     }
   }

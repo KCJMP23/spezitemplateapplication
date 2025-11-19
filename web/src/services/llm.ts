@@ -7,11 +7,68 @@
  * - RAG (Retrieval Augmented Generation)
  * - Prompt templates
  * - HIPAA-compliant AI interactions
+ *
+ * ## IMPORTANT: Production Implementation Required
+ *
+ * This service provides the architecture for LLM integration but uses a simulated
+ * response in the `callLLMAPI()` method. For production use, you must:
+ *
+ * 1. **Choose an LLM Provider**:
+ *    - OpenAI (GPT-4, GPT-3.5-turbo)
+ *    - Anthropic (Claude 3)
+ *    - Azure OpenAI
+ *    - Google Vertex AI (Gemini)
+ *    - Self-hosted models (Ollama, vLLM, etc.)
+ *
+ * 2. **Configure API Credentials**:
+ *    - Set up environment variables (VITE_OPENAI_API_KEY, etc.)
+ *    - Use secure key management (never expose in client code)
+ *    - Consider using a backend proxy for API calls
+ *
+ * 3. **Ensure HIPAA Compliance**:
+ *    - Sign BAA (Business Associate Agreement) with provider
+ *    - Enable encryption at rest and in transit
+ *    - Configure audit logging
+ *    - Implement access controls
+ *    - Verify the provider is HIPAA-compliant
+ *
+ * 4. **Implement Real API Integration**:
+ *    - Uncomment the httpClient import
+ *    - Replace the simulated response in `callLLMAPI()`
+ *    - Add proper error handling and retries
+ *    - Implement rate limiting
+ *    - Add streaming support if needed
+ *
+ * Example implementation for OpenAI:
+ * ```typescript
+ * private async callLLMAPI(messages: LLMMessage[]): Promise<LLMResponse> {
+ *   const response = await httpClient.post('https://api.openai.com/v1/chat/completions', {
+ *     model: this.config.model,
+ *     messages: messages.map(m => ({ role: m.role, content: m.content })),
+ *     temperature: this.config.temperature,
+ *     max_tokens: this.config.maxTokens,
+ *   }, {
+ *     headers: {
+ *       'Authorization': `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+ *       'Content-Type': 'application/json',
+ *     },
+ *   });
+ *   return {
+ *     content: response.choices[0].message.content,
+ *     model: response.model,
+ *     usage: {
+ *       promptTokens: response.usage.prompt_tokens,
+ *       completionTokens: response.usage.completion_tokens,
+ *       totalTokens: response.usage.total_tokens,
+ *     },
+ *   };
+ * }
+ * ```
  */
 
 import { logger } from '@/utils/logger';
 import { auditService } from '@/utils/audit';
-// import { httpClient } from './networking'; // TODO: Use for actual LLM API calls
+// import { httpClient } from './networking'; // Uncomment when implementing real LLM API calls
 
 export interface LLMMessage {
   role: 'system' | 'user' | 'assistant';
@@ -108,14 +165,59 @@ export class LLMService {
     }
   }
 
+  /**
+   * Call LLM API - SIMULATED IMPLEMENTATION
+   *
+   * ⚠️ THIS IS A PLACEHOLDER - Replace with real LLM API integration
+   *
+   * For production, implement one of the following:
+   *
+   * **Option 1: OpenAI (Recommended for general use)**
+   * ```typescript
+   * const response = await httpClient.post('https://api.openai.com/v1/chat/completions', {
+   *   model: 'gpt-4',
+   *   messages: _messages.map(m => ({ role: m.role, content: m.content })),
+   * }, {
+   *   headers: { 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}` }
+   * });
+   * ```
+   *
+   * **Option 2: Anthropic Claude (Recommended for healthcare)**
+   * ```typescript
+   * const response = await httpClient.post('https://api.anthropic.com/v1/messages', {
+   *   model: 'claude-3-opus-20240229',
+   *   messages: _messages,
+   *   max_tokens: 1024,
+   * }, {
+   *   headers: {
+   *     'x-api-key': process.env.ANTHROPIC_API_KEY,
+   *     'anthropic-version': '2023-06-01'
+   *   }
+   * });
+   * ```
+   *
+   * **Option 3: Self-hosted (Maximum privacy)**
+   * ```typescript
+   * const response = await httpClient.post('http://localhost:11434/api/chat', {
+   *   model: 'llama2',
+   *   messages: _messages,
+   * });
+   * ```
+   *
+   * @param _messages - Conversation history (parameter prefixed with _ as it's unused in simulation)
+   * @returns Simulated LLM response
+   */
   private async callLLMAPI(_messages: LLMMessage[]): Promise<LLMResponse> {
-    // Placeholder implementation
-    // In production, this would call OpenAI, Anthropic Claude, or other LLM APIs
-    // using httpClient.post() with the messages parameter
+    logger.warn(
+      'LLM service is using simulated responses. ' +
+      'Implement real LLM API integration for production use.'
+    );
 
-    // Simulated response
+    // Simulated response for development/testing
     return {
-      content: 'I am a healthcare AI assistant. How can I help you today?',
+      content:
+        'I am a healthcare AI assistant (SIMULATED). ' +
+        'This is a placeholder response. Implement real LLM integration for production.',
       model: this.config.model,
       usage: {
         promptTokens: 50,

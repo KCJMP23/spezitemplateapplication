@@ -11,6 +11,7 @@ import { BaseModule, type ModuleMetadata } from '../Module';
 import { Injectable } from '../Dependency';
 import schedulerService from '@/services/scheduler';
 import type { ScheduledTask, RecurrenceRule } from '@/types';
+import { logger } from '@/utils/logger';
 
 /**
  * Scheduler Module - Spezi-compatible wrapper around our scheduler service
@@ -121,13 +122,48 @@ export class SchedulerModule extends BaseModule {
 
   /**
    * Delete task versions
+   *
+   * Note: This implementation requires userId to be stored with tasks.
+   * Alternative: Use deleteTasksForUser() with explicit userId parameter.
    */
   async deleteTasks(taskIds: string[]): Promise<void> {
-    // Our implementation doesn't support versioning yet,
-    // so this just deletes the tasks
-    for (const id of taskIds) {
-      // We'd need userId here - this is a limitation of our current API
-      console.warn('[SchedulerModule] Delete task not fully implemented:', id);
+    // Web implementation limitation: We need userId to delete tasks from Firestore
+    // Tasks are stored at: users/{userId}/tasks/{taskId}
+    //
+    // Spezi iOS stores tasks with SwiftData which doesn't require userId in path.
+    // For web, we need to either:
+    // 1. Query each task to find its userId (expensive)
+    // 2. Use deleteTasksForUser() instead (recommended)
+    //
+    // For now, we'll log a warning. Use deleteTasksForUser() for actual deletion.
+
+    logger.warn(
+      '[SchedulerModule] deleteTasks() cannot delete without userId context. ' +
+      'Use deleteTasksForUser(userId, taskIds) instead.',
+      { taskIds }
+    );
+
+    throw new Error(
+      'deleteTasks() requires userId context in web implementation. ' +
+      'Use deleteTasksForUser(userId, taskIds) instead.'
+    );
+  }
+
+  /**
+   * Delete tasks for a specific user (Web-specific method)
+   *
+   * This is the recommended method for deleting tasks in the web implementation.
+   */
+  async deleteTasksForUser(userId: string, taskIds: string[]): Promise<void> {
+    try {
+      for (const taskId of taskIds) {
+        await schedulerService.deleteTask(userId, taskId);
+      }
+
+      logger.info('Tasks deleted', { userId, count: taskIds.length });
+    } catch (error) {
+      logger.error('Failed to delete tasks', error);
+      throw error;
     }
   }
 

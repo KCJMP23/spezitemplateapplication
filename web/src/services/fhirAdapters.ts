@@ -173,20 +173,51 @@ export class SMARTonFHIRService {
 
   /**
    * Exchange authorization code for access token
+   *
+   * ⚠️ SIMULATED IMPLEMENTATION - Replace with real SMART on FHIR OAuth flow
+   *
+   * For production, implement the full OAuth 2.0 authorization code exchange:
+   *
+   * ```typescript
+   * async handleCallback(code: string): Promise<{ accessToken: string; patient: string }> {
+   *   // Exchange authorization code for access token
+   *   const tokenResponse = await httpClient.post(this.tokenEndpoint, {
+   *     grant_type: 'authorization_code',
+   *     code,
+   *     redirect_uri: this.redirectUri,
+   *     client_id: this.clientId,
+   *   });
+   *
+   *   const { access_token, patient } = tokenResponse;
+   *
+   *   // Store token securely
+   *   await storageService.setItem('smart_access_token', access_token);
+   *   await storageService.setItem('smart_patient_id', patient);
+   *
+   *   return {
+   *     accessToken: access_token,
+   *     patient: patient,
+   *   };
+   * }
+   * ```
+   *
+   * See: http://hl7.org/fhir/smart-app-launch/
    */
   async handleCallback(code: string): Promise<{
     accessToken: string;
     patient: string;
   }> {
     try {
-      // Exchange code for token
-      // Implementation would include token endpoint call
-      logger.info('Handling SMART on FHIR callback');
+      logger.info('Handling SMART on FHIR callback (SIMULATED)');
+      logger.warn(
+        'SMART on FHIR OAuth is simulated. ' +
+        'Implement real token exchange for production use.'
+      );
 
-      // Placeholder return
+      // Simulated response - replace with real OAuth token exchange
       return {
-        accessToken: code,
-        patient: 'patient-id',
+        accessToken: code, // In reality, exchange code for access_token
+        patient: 'patient-id', // In reality, extract from token response
       };
     } catch (error) {
       logger.error('Failed to handle SMART callback', error);

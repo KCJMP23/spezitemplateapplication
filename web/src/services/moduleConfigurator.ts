@@ -135,7 +135,7 @@ class ModuleConfiguratorService {
    */
   async saveConfiguration(config: WizardConfig): Promise<void> {
     try {
-      await storageService.setItem(CONFIG_STORAGE_KEY, JSON.stringify(config));
+      await storageService.set(CONFIG_STORAGE_KEY, config);
       logger.debug('Configuration saved to storage');
     } catch (error) {
       logger.error('Failed to save configuration', error);
@@ -147,9 +147,8 @@ class ModuleConfiguratorService {
    */
   async loadConfiguration(): Promise<WizardConfig | null> {
     try {
-      const configStr = await storageService.getItem(CONFIG_STORAGE_KEY);
-      if (configStr) {
-        const config = JSON.parse(configStr) as WizardConfig;
+      const config = await storageService.get<WizardConfig>(CONFIG_STORAGE_KEY);
+      if (config) {
         this.currentConfig = config;
         return config;
       }
