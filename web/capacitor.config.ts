@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.spezi.health',
-  appName: 'Spezi Health',
+  appId: 'com.intellic.health',
+  appName: 'INTELLIC Health',
   webDir: 'dist',
   server: {
     androidScheme: 'https',
