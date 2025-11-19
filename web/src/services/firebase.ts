@@ -373,3 +373,6 @@ class FirebaseService {
 export const firebaseService = new FirebaseService();
 export default firebaseService;
 export { where, Timestamp };
+
+// Convenience export for direct Firestore access
+export const db = firebaseService.firestore;

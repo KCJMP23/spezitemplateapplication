@@ -12,6 +12,7 @@
 import { logger } from '@/utils/logger';
 import { auditService } from '@/utils/audit';
 import { User } from '@/types';
+import { firebaseService } from './firebase';
 
 // ===== Permission Types =====
 
@@ -112,6 +113,14 @@ export interface AccessResult {
 
 export class AccessGuardService {
   /**
+   * Extract resource from permission string (e.g., 'view:health_data' -> 'health_data')
+   */
+  private extractResource(permission: Permission): string {
+    const parts = permission.split(':');
+    return parts.length > 1 ? parts[1] : permission;
+  }
+
+  /**
    * Check if user has permission
    */
   hasPermission(user: User, permission: Permission): boolean {
@@ -160,7 +169,7 @@ export class AccessGuardService {
 
     // Check basic permission
     if (!this.hasPermission(user, permission)) {
-      await auditService.logAccessDenied(user.id, permission, 'Insufficient permissions');
+      await auditService.logAccessDenied(user.id, this.extractResource(permission) as any, undefined, 'Insufficient permissions');
       return {
         granted: false,
         reason: 'Insufficient permissions',
@@ -172,7 +181,8 @@ export class AccessGuardService {
       if (user.id !== resourceOwnerId) {
         await auditService.logAccessDenied(
           user.id,
-          permission,
+          this.extractResource(permission) as any,
+          undefined,
           'Cannot access another patient\'s data'
         );
         return {
@@ -183,7 +193,7 @@ export class AccessGuardService {
     }
 
     // Log successful access
-    await auditService.logDataAccess(user.id, context.resourceType || 'unknown', resourceOwnerId);
+    await auditService.logDataAccess(user.id, (context.resourceType || 'health_data') as any, resourceOwnerId || 'unknown');
 
     return {
       granted: true,
