@@ -245,9 +245,9 @@ export class ArrayUtils {
    * Flattens nested array
    */
   static flatten<T>(array: (T | T[])[]): T[] {
-    return array.reduce((flat, item) => {
-      return flat.concat(Array.isArray(item) ? ArrayUtils.flatten(item) : item);
-    }, [] as T[]);
+    return array.reduce<T[]>((flat, item) => {
+      return flat.concat(Array.isArray(item) ? ArrayUtils.flatten(item) : [item]);
+    }, []);
   }
 
   /**

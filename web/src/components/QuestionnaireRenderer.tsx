@@ -118,7 +118,7 @@ export default function QuestionnaireRenderer({
             >
               {item.answerOption?.map((option) => (
                 <FormControlLabel
-                  key={option.valueCoding?.id || option.valueCoding?.code}
+                  key={option.valueCoding?.code || option.valueCoding?.display}
                   value={option.valueCoding?.code || ''}
                   control={<Radio />}
                   label={option.valueCoding?.display || ''}
@@ -168,8 +168,7 @@ export default function QuestionnaireRenderer({
             helperText={error}
             sx={{ mb: 3 }}
             inputProps={{
-              min: item.extension?.find((ext) => ext.url.includes('minValue'))?.valueInteger,
-              max: item.extension?.find((ext) => ext.url.includes('maxValue'))?.valueInteger,
+              // min/max would come from FHIR extensions if available
             }}
           />
         );

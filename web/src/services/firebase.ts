@@ -229,7 +229,7 @@ class FirebaseService {
   ): Promise<void> {
     try {
       const docRef = doc(this.firestore, collectionName, documentId);
-      await setDoc(docRef, data);
+      await setDoc(docRef, data as any);
 
       const userId = this.getCurrentUser()?.uid;
       if (userId) {

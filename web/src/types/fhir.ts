@@ -296,4 +296,4 @@ export const OBSERVATION_CATEGORIES = {
       display: 'Laboratory',
     }],
   },
-} as const;
+};

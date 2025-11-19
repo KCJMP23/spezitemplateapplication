@@ -195,7 +195,7 @@ class QuestionnaireService {
     status: ScheduledTask['status']
   ): Promise<void> {
     try {
-      await schedulerService.updateTaskStatus(userId, taskId, status);
+      await schedulerService.updateTask(userId, taskId, { status });
       logger.info('Task status updated', { userId, taskId, status });
     } catch (error) {
       logger.error('Failed to update task status', error);

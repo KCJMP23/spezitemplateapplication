@@ -18,7 +18,7 @@ import {
   Language,
   LocationOn,
   Person,
-  Emergency,
+  LocalHospital,
 } from '@mui/icons-material';
 import { Contact } from '@/types';
 import contactService from '@/services/contact';
@@ -110,7 +110,7 @@ export default function ContactsView(): JSX.Element {
                     }}
                   >
                     {contact.id === 'emergency' ? (
-                      <Emergency />
+                      <LocalHospital />
                     ) : (
                       <Person />
                     )}

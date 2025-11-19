@@ -29,7 +29,7 @@ import {
   Refresh,
   TrendingUp,
   TrendingDown,
-} from '@mui/material/icons-material';
+} from '@mui/icons-material';
 import { useAuth } from '@/hooks/useAuth';
 import { HealthData, HealthDataType } from '@/types';
 import healthDataService from '@/services/healthData';

@@ -57,7 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
           displayName: firebaseUser.displayName || '',
           roles: ['patient'], // Default role
           primaryRole: 'patient',
-          photoURL: firebaseUser.photoURL,
+          photoURL: firebaseUser.photoURL || undefined,
           createdAt: new Date(),
           updatedAt: new Date(),
           lastLoginAt: new Date(),
