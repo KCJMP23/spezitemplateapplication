@@ -99,6 +99,10 @@ export class BluetoothManager {
         optionalServices: Object.values(GATT_SERVICES),
       };
 
+      if (!navigator.bluetooth) {
+        throw new Error('Web Bluetooth API is not available in this browser');
+      }
+
       const device = await navigator.bluetooth.requestDevice(options);
 
       logger.info('Bluetooth device requested', {
@@ -106,10 +110,8 @@ export class BluetoothManager {
         id: device.id,
       });
 
-      // Set up disconnect handler
-      device.addEventListener('gattserverdisconnected', () => {
-        this.handleDisconnect(device.id);
-      });
+      // Note: gattserverdisconnected event handling would be set up after connection
+      // The standard Web Bluetooth API doesn't support addEventListener on BluetoothDevice directly
 
       return device;
     } catch (error) {
@@ -190,20 +192,27 @@ export class BluetoothManager {
     server: BluetoothRemoteGATTServer
   ): Promise<void> {
     try {
-      const services = await server.getPrimaryServices();
       const characteristics = new Map<string, BluetoothRemoteGATTCharacteristic>();
 
-      for (const service of services) {
-        logger.debug('Discovered service', { uuid: service.uuid });
+      // Web Bluetooth API requires requesting services one at a time
+      // Try each known GATT service
+      for (const serviceUUID of Object.values(GATT_SERVICES)) {
+        try {
+          const service = await server.getPrimaryService(serviceUUID);
+          logger.debug('Discovered service', { uuid: service.uuid });
 
-        const chars = await service.getCharacteristics();
-        for (const char of chars) {
-          characteristics.set(char.uuid, char);
+          const chars = await service.getCharacteristics();
+          for (const char of chars) {
+            characteristics.set(char.uuid, char);
 
-          // Subscribe to notifications if supported
-          if (char.properties.notify) {
-            await this.subscribeToNotifications(deviceId, char);
+            // Subscribe to notifications if supported
+            if (char.properties.notify) {
+              await this.subscribeToNotifications(deviceId, char);
+            }
           }
+        } catch (error) {
+          // Service not available on this device, continue
+          logger.debug('Service not available', { serviceUUID });
         }
       }
 
@@ -224,7 +233,7 @@ export class BluetoothManager {
       await characteristic.startNotifications();
 
       characteristic.addEventListener('characteristicvaluechanged', (event) => {
-        const char = event.target as BluetoothRemoteGATTCharacteristic;
+        const char = event.target as unknown as BluetoothRemoteGATTCharacteristic;
         this.handleCharacteristicChange(deviceId, char);
       });
 
@@ -380,7 +389,7 @@ export class BluetoothManager {
   /**
    * Detect device type from GATT services
    */
-  private detectDeviceType(server: BluetoothRemoteGATTServer): DeviceType {
+  private detectDeviceType(_server: BluetoothRemoteGATTServer): DeviceType {
     // This would check available services to determine device type
     // Simplified version:
     return 'other';

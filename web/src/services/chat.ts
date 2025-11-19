@@ -13,7 +13,6 @@ import { collection, query, orderBy, limit, onSnapshot, addDoc, updateDoc, doc, 
 import { db } from './firebase';
 import { logger } from '@/utils/logger';
 import { auditService } from '@/utils/audit';
-import { globalEventBus } from './speziKit';
 import notificationService from './notification';
 
 export interface Message {
@@ -61,14 +60,16 @@ export class ChatService {
         `New message from ${message.senderName}`,
         message.content.substring(0, 100),
         {
-          type: 'chat',
-          conversationId: message.conversationId,
-          senderId: message.senderId,
+          data: {
+            type: 'chat',
+            conversationId: message.conversationId,
+            senderId: message.senderId,
+          },
         }
       );
 
       // Audit log
-      await auditService.log(message.senderId, 'send', 'message', docRef.id);
+      await auditService.log(message.senderId, 'create', 'health_data', docRef.id);
 
       logger.info('Message sent', { messageId: docRef.id });
       return docRef.id;

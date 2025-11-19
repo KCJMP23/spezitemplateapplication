@@ -89,7 +89,8 @@ export class LLMService {
 
       // Audit log
       if (userId) {
-        await auditService.log(userId, 'interact', 'llm', conversationId, {
+        await auditService.log(userId, 'create', 'health_data', conversationId, {
+          type: 'llm_interaction',
           model: this.config.model,
           tokens: response.usage?.totalTokens,
         });

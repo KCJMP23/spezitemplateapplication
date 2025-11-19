@@ -70,8 +70,9 @@ export class MedicationService {
         await this.scheduleMedicationReminders(med);
       }
 
-      await auditService.log(medication.userId, 'create', 'medication', id, {
+      await auditService.log(medication.userId, 'create', 'health_data', id, {
         name: medication.name,
+        type: 'medication',
       });
 
       logger.info('Medication added', { id, name: medication.name });
@@ -94,7 +95,7 @@ export class MedicationService {
         }
       }
 
-      await auditService.log(userId, 'update', 'medication', medicationId);
+      await auditService.log(userId, 'update', 'health_data', medicationId);
       logger.info('Medication updated', { medicationId });
     } catch (error) {
       logger.error('Failed to update medication', error);
@@ -105,7 +106,7 @@ export class MedicationService {
   async deleteMedication(userId: string, medicationId: string): Promise<void> {
     try {
       await firebaseService.deleteDocument(`users/${userId}/medications`, medicationId);
-      await auditService.log(userId, 'delete', 'medication', medicationId);
+      await auditService.log(userId, 'delete', 'health_data', medicationId);
       logger.info('Medication deleted', { medicationId });
     } catch (error) {
       logger.error('Failed to delete medication', error);
@@ -135,7 +136,7 @@ export class MedicationService {
         medications = medications.filter((m) => m.active);
       }
 
-      await auditService.logDataAccess(userId, 'medication', 'list');
+      await auditService.logDataAccess(userId, 'health_data', 'medications');
       return medications;
     } catch (error) {
       logger.error('Failed to get user medications', error);
@@ -164,13 +165,14 @@ export class MedicationService {
           userId: medication.userId,
           title: `Take ${medication.name}`,
           description: `${dose.amount} - ${medication.dosage}`,
-          taskType: 'medication',
+          taskType: 'reminder',
           status: 'pending',
           scheduledFor,
           recurrence,
           metadata: {
             medicationId: medication.id,
             dosage: dose.amount,
+            type: 'medication',
           },
         });
       }
@@ -195,7 +197,8 @@ export class MedicationService {
       // Update adherence rate
       await this.updateAdherenceRate(dose.userId, dose.medicationId);
 
-      await auditService.log(dose.userId, 'record', 'medication_dose', id, {
+      await auditService.log(dose.userId, 'create', 'health_data', id, {
+        type: 'medication_dose',
         status: dose.status,
       });
 

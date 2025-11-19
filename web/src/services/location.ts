@@ -102,7 +102,8 @@ export class LocationManager {
 
       // Audit log
       if (userId) {
-        await auditService.log(userId, 'access', 'location', 'current', {
+        await auditService.log(userId, 'read', 'health_data', 'current', {
+          type: 'location',
           accuracy: locationData.accuracy,
         });
       }
@@ -171,7 +172,8 @@ export class LocationManager {
       logger.info('Started location tracking', { userId, interval });
 
       // Audit log
-      await auditService.log(userId, 'start', 'location_tracking', 'tracking', {
+      await auditService.log(userId, 'create', 'health_data', 'tracking', {
+        type: 'location_tracking',
         interval,
         highAccuracy,
       });
@@ -198,7 +200,10 @@ export class LocationManager {
       logger.info('Stopped location tracking');
 
       if (userId) {
-        await auditService.log(userId, 'stop', 'location_tracking', 'tracking');
+        await auditService.log(userId, 'update', 'health_data', 'tracking', {
+          type: 'location_tracking',
+          action: 'stopped',
+        });
       }
 
       globalEventBus.emit('location:tracking:stopped');
@@ -253,7 +258,7 @@ export class LocationManager {
         limit
       );
 
-      await auditService.logDataAccess(userId, 'location', 'history');
+      await auditService.logDataAccess(userId, 'health_data', 'location_history');
 
       return locations;
     } catch (error) {

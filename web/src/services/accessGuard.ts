@@ -12,7 +12,7 @@
 import { logger } from '@/utils/logger';
 import { auditService } from '@/utils/audit';
 import { User } from '@/types';
-import { firebaseService } from './firebase';
+import { firebaseService, where } from './firebase';
 
 // ===== Permission Types =====
 
@@ -208,7 +208,7 @@ export class AccessGuardService {
       // Check if user has signed consent in Firestore
       const consentDocs = await firebaseService.queryDocuments<any>(
         `users/${userId}/consents`,
-        [{ field: 'status', operator: '==', value: 'signed' }]
+        where('status', '==', 'signed')
       );
 
       // Check if there's at least one valid signed consent

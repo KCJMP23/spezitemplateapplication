@@ -147,7 +147,9 @@ export class StudyService {
         currentEnrollment: study.currentEnrollment + 1,
       });
 
-      await auditService.log(userId, 'enroll', 'study', studyId);
+      await auditService.log(userId, 'create', 'study_data', studyId, {
+        action: 'enrollment',
+      });
 
       logger.info('Participant enrolled', { studyId, userId });
       return participant;

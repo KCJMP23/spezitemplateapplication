@@ -10,6 +10,7 @@
  */
 
 import { Motion, AccelListenerEvent } from '@capacitor/motion';
+import { PluginListenerHandle } from '@capacitor/core';
 import { logger } from '@/utils/logger';
 import { globalEventBus } from './speziKit';
 import firebaseService from './firebase';
@@ -74,7 +75,7 @@ export class SensorManager {
   private activeSensors: Set<SensorType> = new Set();
   private sensorData: Map<SensorType, SensorData[]> = new Map();
   private maxDataPoints: number = 1000;
-  private motionListenerId: string | null = null;
+  private motionListenerId: PluginListenerHandle | null = null;
   private collecting: boolean = false;
 
   /**
@@ -121,7 +122,7 @@ export class SensorManager {
     try {
       // Stop motion sensors
       if (this.motionListenerId) {
-        await Motion.removeAllListeners();
+        await this.motionListenerId.remove();
         this.motionListenerId = null;
       }
 
