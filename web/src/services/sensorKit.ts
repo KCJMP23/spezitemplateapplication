@@ -186,7 +186,7 @@ export class SensorManager {
    */
   private async startMotionSensors(
     userId: string,
-    samplingRate: number,
+    _samplingRate: number, // TODO: Use for configurable sampling rate
     batchSize: number,
     saveToFirestore: boolean
   ): Promise<void> {
@@ -408,7 +408,7 @@ export class StepCounter {
   private startTime: Date | null = null;
   private counting: boolean = false;
 
-  async start(userId: string): Promise<void> {
+  async start(_userId: string): Promise<void> {
     if (this.counting) {
       logger.warn('Step counting already started');
       return;
@@ -420,7 +420,7 @@ export class StepCounter {
 
     // Use accelerometer data to detect steps
     // This is a simplified implementation
-    logger.info('Step counting started');
+    logger.info('Step counting started', { startTime: this.startTime });
   }
 
   stop(): number {

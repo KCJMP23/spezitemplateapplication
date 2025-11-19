@@ -64,7 +64,9 @@ export class LocationManager {
   async checkPermissions(): Promise<'granted' | 'denied' | 'prompt'> {
     try {
       const result = await Geolocation.checkPermissions();
-      return result.location;
+      const status = result.location;
+      // Handle Android's 'prompt-with-rationale' as 'prompt'
+      return status === 'prompt-with-rationale' ? 'prompt' : status;
     } catch (error) {
       logger.error('Failed to check location permissions', error);
       return 'denied';

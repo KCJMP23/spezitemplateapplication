@@ -10,9 +10,9 @@
  */
 
 import firebaseService from './firebase';
-import fhirService from './fhir';
+// import fhirService from './fhir'; // TODO: Use for FHIR MedicationRequest conversion
 import schedulerService from './scheduler';
-import notificationService from './notification';
+// import notificationService from './notification'; // Notifications handled via scheduler
 import { logger } from '@/utils/logger';
 import { auditService } from '@/utils/audit';
 import { RecurrenceRule } from '@/types';

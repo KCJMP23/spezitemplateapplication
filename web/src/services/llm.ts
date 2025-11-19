@@ -11,7 +11,7 @@
 
 import { logger } from '@/utils/logger';
 import { auditService } from '@/utils/audit';
-import { httpClient } from './networking';
+// import { httpClient } from './networking'; // TODO: Use for actual LLM API calls
 
 export interface LLMMessage {
   role: 'system' | 'user' | 'assistant';
@@ -108,9 +108,10 @@ export class LLMService {
     }
   }
 
-  private async callLLMAPI(messages: LLMMessage[]): Promise<LLMResponse> {
+  private async callLLMAPI(_messages: LLMMessage[]): Promise<LLMResponse> {
     // Placeholder implementation
     // In production, this would call OpenAI, Anthropic Claude, or other LLM APIs
+    // using httpClient.post() with the messages parameter
 
     // Simulated response
     return {

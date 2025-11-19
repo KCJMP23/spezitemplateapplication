@@ -139,7 +139,8 @@ export class DeviceManager {
   }
 
   hasCapability(capability: keyof DeviceCapabilities): boolean {
-    return this.capabilities?.[capability] || false;
+    const value = this.capabilities?.[capability];
+    return typeof value === 'boolean' ? value : false;
   }
 
   // Connected devices management
