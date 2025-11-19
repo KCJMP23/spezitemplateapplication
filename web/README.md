@@ -1,4 +1,6 @@
-# Spezi Health - React PWA
+# Healthcare PWA - Spezi-Inspired Digital Health Platform
+
+> **Important**: This is a **web-based healthcare application inspired by Stanford Spezi**, not a direct port of iOS Spezi modules. It provides similar healthcare functionality using React/TypeScript and modern web technologies.
 
 A modular Progressive Web App for healthcare research, supporting patients, providers, and researchers with FHIR-compliant data management and wearable integration.
 
@@ -373,6 +375,40 @@ See LICENSE.md in the root directory.
 
 For questions or issues, please file an issue on the GitHub repository.
 
+## Relationship to Stanford Spezi
+
+This project is **inspired by** [Stanford Spezi](https://github.com/StanfordSpezi/Spezi), an excellent open-source framework for building digital health applications on iOS.
+
+### What We Share with Spezi
+- Similar healthcare module concepts
+- FHIR R4 standard compliance
+- Modular, configurable architecture
+- HIPAA-compliant design patterns
+- Healthcare-focused feature set
+
+### Key Differences from Spezi iOS
+| Aspect | Spezi iOS | This Project |
+|--------|-----------|--------------|
+| **Platform** | iOS native | Web (+ Capacitor) |
+| **Language** | Swift | TypeScript/React |
+| **Architecture** | Module + Standard | Service Layer + Event Bus |
+| **DI Pattern** | `@Dependency` wrapper | Service Container |
+| **Storage** | SwiftData (versioned) | Firestore/IndexedDB |
+| **UI** | SwiftUI | React + Material-UI |
+
+For a detailed comparison, see `MIGRATION_ANALYSIS.md`.
+
+### Spezi Compatibility Layer (In Development)
+
+We're building a compatibility layer at `web/src/spezi-compat/` that implements:
+- Module protocol interface
+- Standard coordinator pattern
+- Dependency injection system
+- API compatibility with Spezi modules
+
+This will enable future integration with the Spezi ecosystem.
+
 ## Acknowledgments
 
-Built with the Stanford Spezi framework principles, migrated to React for cross-platform web support.
+- **Stanford Spezi Team** - For the architectural inspiration and excellent open-source framework
+- The open-source healthcare community
