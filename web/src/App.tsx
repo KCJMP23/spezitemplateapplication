@@ -33,6 +33,9 @@ const DataAnalysisView = lazy(() => import('@/modules/researcher/DataAnalysisVie
 const ContactsView = lazy(() => import('@/modules/contacts/ContactsView'));
 const AccountView = lazy(() => import('@/modules/account/AccountView'));
 
+// Setup modules
+const ModuleSetupView = lazy(() => import('@/modules/setup/ModuleSetupView'));
+
 // Theme configuration
 const theme = createTheme({
   palette: {
@@ -235,6 +238,16 @@ function AppRoutes(): JSX.Element {
             <RoleRoute allowedRoles={['researcher']}>
               <DataAnalysisView />
             </RoleRoute>
+          }
+        />
+
+        {/* Setup routes - accessible to all authenticated users */}
+        <Route
+          path="/setup/modules"
+          element={
+            <ProtectedRoute>
+              <ModuleSetupView />
+            </ProtectedRoute>
           }
         />
 
