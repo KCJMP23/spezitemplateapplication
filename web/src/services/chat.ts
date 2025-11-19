@@ -82,7 +82,9 @@ export class ChatService {
   async markAsRead(messageId: string, userId: string): Promise<void> {
     try {
       await updateDoc(doc(db, 'messages', messageId), { read: true });
-      await auditService.log(userId, 'read', 'message', messageId);
+      await auditService.log(userId, 'read', 'health_data', messageId, {
+        type: 'message',
+      });
     } catch (error) {
       logger.error('Failed to mark message as read', error);
     }

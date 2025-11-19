@@ -9,6 +9,7 @@
  * - Batch processing
  */
 
+import { limit } from 'firebase/firestore';
 import { logger } from '@/utils/logger';
 import { AsyncUtils } from '@/utils/foundation';
 import firebaseService from './firebase';
@@ -267,8 +268,7 @@ export class DataQualityService {
       // Fetch recent data from Firestore
       const data = await firebaseService.queryDocuments<any>(
         `users/${userId}/${dataType}`,
-        [],
-        100
+        limit(100)
       );
 
       if (data.length === 0) {

@@ -10,6 +10,7 @@
  */
 
 import { Geolocation, Position, PositionOptions } from '@capacitor/geolocation';
+import { limit } from 'firebase/firestore';
 import { logger } from '@/utils/logger';
 import { auditService } from '@/utils/audit';
 import { globalEventBus } from './speziKit';
@@ -250,12 +251,11 @@ export class LocationManager {
   /**
    * Get saved locations from Firestore
    */
-  async getSavedLocations(userId: string, limit: number = 50): Promise<LocationData[]> {
+  async getSavedLocations(userId: string, maxResults: number = 50): Promise<LocationData[]> {
     try {
       const locations = await firebaseService.queryDocuments<LocationData>(
         `users/${userId}/locations`,
-        [],
-        limit
+        limit(maxResults)
       );
 
       await auditService.logDataAccess(userId, 'health_data', 'location_history');
