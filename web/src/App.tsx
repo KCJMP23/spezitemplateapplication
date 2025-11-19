@@ -20,6 +20,7 @@ const LoginView = lazy(() => import('@/modules/auth/LoginView'));
 // Patient modules
 const HealthDataView = lazy(() => import('@/modules/patient/HealthDataView'));
 const QuestionnairesView = lazy(() => import('@/modules/patient/QuestionnairesView'));
+const DataSourcesView = lazy(() => import('@/modules/patient/DataSourcesView'));
 
 // Provider modules
 const PatientManagementView = lazy(() => import('@/modules/provider/PatientManagementView'));
@@ -199,6 +200,15 @@ function AppRoutes(): JSX.Element {
           element={
             <RoleRoute allowedRoles={['patient']}>
               <QuestionnairesView />
+            </RoleRoute>
+          }
+        />
+
+        <Route
+          path="/data-sources"
+          element={
+            <RoleRoute allowedRoles={['patient']}>
+              <DataSourcesView />
             </RoleRoute>
           }
         />
